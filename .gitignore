@@ -1,0 +1,30 @@
+# Python virtual environment
+venv/
+.venv/
+ENV/
+
+# Python caching
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project-specific temp/data files
+news.txt
+summary.txt
+
+# Editor / IDE configuration
+.vscode/
+.idea/
+*.swp
+*.swo

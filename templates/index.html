@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigQuery Release Notes Dashboard & Tracker</title>
+    
+    <!-- Modern Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="glow-bg"></div>
+    
+    <div class="app-container">
+        <!-- Dashboard Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo-area">
+                    <span class="badge">Google Cloud</span>
+                    <h1 class="gradient-title">BigQuery Release Notes</h1>
+                    <p class="subtitle">Track, select, and share the latest features and updates in real-time</p>
+                </div>
+                
+                <div class="actions-area">
+                    <button id="btn-refresh" class="btn btn-primary">
+                        <svg class="icon icon-sync" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                        </svg>
+                        <span>Refresh Feed</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Workspace Area -->
+        <main class="dashboard-grid">
+            <!-- Left Panel: Release Notes List -->
+            <section class="feed-section">
+                <div class="feed-header">
+                    <h2>Updates Feed</h2>
+                    <span id="feed-count" class="count-badge">Loading...</span>
+                </div>
+                
+                <div id="loading-container" class="loading-container">
+                    <!-- Loading Skeletons -->
+                    <div class="skeleton-card">
+                        <div class="skeleton skeleton-title"></div>
+                        <div class="skeleton skeleton-pill"></div>
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text"></div>
+                    </div>
+                    <div class="skeleton-card">
+                        <div class="skeleton skeleton-title"></div>
+                        <div class="skeleton skeleton-pill"></div>
+                        <div class="skeleton skeleton-text"></div>
+                    </div>
+                </div>
+                
+                <div id="error-container" class="error-container hidden">
+                    <div class="error-card">
+                        <svg class="icon-error" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <p id="error-message">Failed to load feed items.</p>
+                        <button id="btn-retry" class="btn btn-secondary">Retry</button>
+                    </div>
+                </div>
+                
+                <div id="feed-container" class="feed-container hidden">
+                    <!-- Dynamic release items will go here -->
+                </div>
+            </section>
+
+            <!-- Right Panel: Twitter Composer & Detail View -->
+            <section class="detail-section">
+                <div class="sticky-panel">
+                    <div class="composer-header">
+                        <h2>Tweet Composer</h2>
+                    </div>
+                    
+                    <div id="composer-empty" class="composer-empty">
+                        <div class="empty-state">
+                            <div class="empty-icon-wrap">
+                                <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
+                                </svg>
+                            </div>
+                            <h3>No Update Selected</h3>
+                            <p>Select any release update card from the feed to compose a tweet about it.</p>
+                        </div>
+                    </div>
+                    
+                    <div id="composer-active" class="composer-active hidden">
+                        <div class="composer-card">
+                            <div class="update-preview">
+                                <div class="preview-meta">
+                                    <span id="preview-date" class="preview-date">June 15, 2026</span>
+                                    <span id="preview-type" class="type-pill">Feature</span>
+                                </div>
+                                <div id="preview-body" class="preview-body">
+                                    <!-- Rendered text of the selected update -->
+                                </div>
+                            </div>
+                            
+                            <div class="composer-editor">
+                                <label for="tweet-textarea">Customize Tweet Text</label>
+                                <textarea id="tweet-textarea" rows="5" placeholder="Share your thoughts..."></textarea>
+                                
+                                <div class="composer-footer">
+                                    <div class="char-counter">
+                                        <span id="char-count">0</span> / 280
+                                    </div>
+                                    
+                                    <button id="btn-tweet" class="btn btn-tweet">
+                                        <svg class="icon-twitter" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                        </svg>
+                                        <span>Post on X (Twitter)</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="app-footer">
+            <p>BigQuery Release Notes Explorer &copy; 2026. Made with Google Cloud feed services.</p>
+        </footer>
+    </div>
+    
+    <!-- Toast notifications -->
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- Frontend logic -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
